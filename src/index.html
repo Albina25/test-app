@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test App</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="./assets/styles/main.scss">
+</head>
+<body>
+    <div>
+        <div id="app">
+            <div class="navbar">
+                <div class="navbar__header">
+                    <button class="navbar__button" id="navbar-button"><i class="fa-solid fa-bars"></i></button>
+                    <span class="navbar__title"></span>
+                </div>
+                <div class="navbar__content">
+                    <ul id="test-list"></ul>
+                </div>
+            </div>
+            <main class="content">
+                <!--<p>Выберите тест из списка</p>-->
+                <div id="page-content"></div>
+            </main>
+        </div>
+        <script type="module" src="./main.ts"></script>
+    </div>
+</body>
+</html>

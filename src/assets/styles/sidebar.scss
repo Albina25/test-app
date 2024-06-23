@@ -1,0 +1,133 @@
+$navbar-width: 200px;
+$navbar-collapsed-width: 50px;
+$menu-icon-color: #8EACBB;
+$navbar-color: #ECEFF1;
+$navbar-height: 50px;
+
+#app {
+  display: flex;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  #app {
+    flex-direction: column;
+  }
+}
+
+.navbar {
+  width: $navbar-collapsed-width;
+  height: 100vh;
+  background-color: $navbar-color;
+  transition: width 0.3s;
+  position: relative;
+
+  &.collapsed  {
+    width: $navbar-width;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px;
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background-color: $line-color;
+    }
+  }
+
+  &__title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__button {
+    position: absolute;
+    top: 10px;
+    left: 15px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: $menu-icon-color;
+    cursor: pointer;
+    transition: transform 0.3s;
+
+    i {
+      transition: transform 0.3s;
+    }
+  }
+
+  &__content {
+    width: 100%;
+    padding: 10px;
+
+    opacity: 0;
+    transition: opacity 0.1s;
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+
+      li {
+        margin: 10px 0;
+        &:before {
+          content: '• ';
+          color: black;
+        }
+      }
+    }
+  }
+
+  &.collapsed .navbar__content {
+    opacity: 1;
+    transition-delay: 0.2s;
+    transition: opacity 0.3s;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    width: 100%;
+    height: $navbar-height;
+    flex-direction: row;
+    justify-content: space-between;
+
+    &.collapsed {
+      transform: translateY(-100%);
+    }
+
+    .navbar__content {
+      flex-direction: column;
+      position: absolute;
+      top: $navbar-height;
+      left: 0;
+      width: 100%;
+      height: calc(100vh - $navbar-height);
+      background-color: $navbar-color;
+      display: none;
+      align-items: center;
+
+      ul {
+        margin-top: 20px;
+      }
+
+      &.visible {
+        display: flex;
+        opacity: 1;
+      }
+    }
+  }
+}
+

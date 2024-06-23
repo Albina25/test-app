@@ -1,0 +1,47 @@
+.button {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  gap: 15px;
+  border-radius: 4px;
+  height: 40px;
+  padding: 8px 15px;
+  border:none;
+  cursor: pointer;
+}
+
+.bottom-buttons {
+  position: fixed;
+  bottom: 0;
+  padding: 8px 16px;
+  width: 100%;
+  border-top: 1px solid $line-color;
+}
+
+.button_secondary {
+  background-color: $secondary-color;
+  color: $white;
+}
+
+.button_primary {
+  background-color: $primary-color;
+  color: $white;
+}
+
+.button_outlined-primary {
+  background-color: $white;
+  color: $primary-color;
+  border: 1px solid $primary-color;
+}
+
+.button_outlined-gray {
+  background-color: $white;
+  color: $gray20;
+  border: 1px solid $gray20;
+}
+
+.button_text {
+  background-color: $white;
+  color: $gray20;
+  border: none;
+}
