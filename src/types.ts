@@ -8,8 +8,7 @@ interface Test {
 interface Question {
     id: number,
     value: string,
-    correctAnswer: string,
-    userAnswer?: string | null,
+    correctAnswer: number,
     answers: Array<Answer>,
 }
 

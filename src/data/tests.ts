@@ -8,7 +8,7 @@ export const tests: Array<Test> = [
             {
                 id: 1,
                 value: 'Вопрос первый',
-                correctAnswer: 'Вариант А',
+                correctAnswer: 1,
                 answers: [
                     {id: 1, value: 'Вариант А'},
                     {id: 2, value: 'Вариант Б'},
@@ -21,7 +21,7 @@ export const tests: Array<Test> = [
             {
                 id: 2,
                 value: 'Вопрос еще один',
-                correctAnswer: 'Вариант Б',
+                correctAnswer: 2,
                 answers: [
                     {id: 1, value: 'Вариант А'},
                     {id: 2, value: 'Вариант Б'},
@@ -34,7 +34,7 @@ export const tests: Array<Test> = [
             {
                 id: 3,
                 value: 'Очень выжный вопрос',
-                correctAnswer: 'Вариант В',
+                correctAnswer: 3,
                 answers: [
                     {id: 1, value: 'Вариант А'},
                     {id: 2, value: 'Вариант Б'},
@@ -47,7 +47,7 @@ export const tests: Array<Test> = [
             {
                 id: 4,
                 value: 'Вопрос 4',
-                correctAnswer: 'Вариант А',
+                correctAnswer: 4,
                 answers: [
                     {id: 1, value: 'Вариант А'},
                     {id: 2, value: 'Вариант Б'},
@@ -60,7 +60,7 @@ export const tests: Array<Test> = [
             {
                 id: 5,
                 value: 'Вопрос особенный',
-                correctAnswer: 'Lorem ipsum sit amet, consectetur adipiscing elit.',
+                correctAnswer: 3,
                 answers: [
                     {id: 1, value: 'Lorem ipsum sit amet, consectetur adipiscing elit.'},
                     {id: 2, value: 'Lorem ipsum dolor sit amet, consectetur adipsicing elit. Aliquam sollicitudin odio sit amet.'},
@@ -77,7 +77,7 @@ export const tests: Array<Test> = [
             {
                 id: 1,
                 value: 'Вопрос',
-                correctAnswer: 'Вариант А',
+                correctAnswer: 4,
                 answers: [
                     {id: 1, value: 'Вариант А'},
                     {id: 2, value: 'Вариант Б'},
@@ -90,7 +90,7 @@ export const tests: Array<Test> = [
             {
                 id: 2,
                 value: 'Вопрос',
-                correctAnswer: 'Вариант Б',
+                correctAnswer: 1,
                 answers: [
                     {id: 1, value: 'Вариант А'},
                     {id: 2, value: 'Вариант Б'},
@@ -103,7 +103,7 @@ export const tests: Array<Test> = [
             {
                 id: 3,
                 value: 'Вопрос',
-                correctAnswer: 'Вариант В',
+                correctAnswer: 2,
                 answers: [
                     {id: 1, value: 'Вариант А'},
                     {id: 2, value: 'Вариант Б'},
@@ -116,7 +116,7 @@ export const tests: Array<Test> = [
             {
                 id: 4,
                 value: 'Вопрос',
-                correctAnswer: 'Вариант А',
+                correctAnswer: 1,
                 answers: [
                     {id: 1, value: 'Вариант А'},
                     {id: 2, value: 'Вариант Б'},
@@ -129,7 +129,7 @@ export const tests: Array<Test> = [
             {
                 id: 5,
                 value: 'Вопрос',
-                correctAnswer: 'Lorem ipsum sit amet, consectetur adipiscing elit.',
+                correctAnswer: 2,
                 answers: [
                     {id: 1, value: 'Lorem ipsum sit amet, consectetur adipiscing elit.'},
                     {id: 2, value: 'Lorem ipsum dolor sit amet, consectetur adipsicing elit. Aliquam sollicitudin odio sit amet.'},
@@ -146,7 +146,7 @@ export const tests: Array<Test> = [
             {
                 id: 1,
                 value: 'Вопрос',
-                correctAnswer: 'Вариант А',
+                correctAnswer: 1,
                 answers: [
                     {id: 1, value: 'Вариант А'},
                     {id: 2, value: 'Вариант Б'},
@@ -159,7 +159,7 @@ export const tests: Array<Test> = [
             {
                 id: 2,
                 value: 'Вопрос',
-                correctAnswer: 'Вариант Б',
+                correctAnswer: 1,
                 answers: [
                     {id: 1, value: 'Вариант А'},
                     {id: 2, value: 'Вариант Б'},
@@ -172,7 +172,7 @@ export const tests: Array<Test> = [
             {
                 id: 3,
                 value: 'Вопрос',
-                correctAnswer: 'Вариант В',
+                correctAnswer: 1,
                 answers: [
                     {id: 1, value: 'Вариант А'},
                     {id: 2, value: 'Вариант Б'},
@@ -185,7 +185,7 @@ export const tests: Array<Test> = [
             {
                 id: 4,
                 value: 'Вопрос',
-                correctAnswer: 'Вариант А',
+                correctAnswer: 6,
                 answers: [
                     {id: 1, value: 'Вариант А'},
                     {id: 2, value: 'Вариант Б'},
@@ -198,7 +198,7 @@ export const tests: Array<Test> = [
             {
                 id: 5,
                 value: 'Вопрос',
-                correctAnswer: 'Lorem ipsum sit amet, consectetur adipiscing elit.',
+                correctAnswer: 3,
                 answers: [
                     {id: 1, value: 'Lorem ipsum sit amet, consectetur adipiscing elit.'},
                     {id: 2, value: 'Lorem ipsum dolor sit amet, consectetur adipsicing elit. Aliquam sollicitudin odio sit amet.'},
@@ -215,7 +215,7 @@ export const tests: Array<Test> = [
             {
                 id: 1,
                 value: 'Вопрос',
-                correctAnswer: 'Вариант А',
+                correctAnswer: 1,
                 answers: [
                     {id: 1, value: 'Вариант А'},
                     {id: 2, value: 'Вариант Б'},
@@ -228,7 +228,7 @@ export const tests: Array<Test> = [
             {
                 id: 2,
                 value: 'Вопрос',
-                correctAnswer: 'Вариант Б',
+                correctAnswer: 5,
                 answers: [
                     {id: 1, value: 'Вариант А'},
                     {id: 2, value: 'Вариант Б'},
@@ -241,7 +241,7 @@ export const tests: Array<Test> = [
             {
                 id: 3,
                 value: 'Вопрос',
-                correctAnswer: 'Вариант В',
+                correctAnswer: 1,
                 answers: [
                     {id: 1, value: 'Вариант А'},
                     {id: 2, value: 'Вариант Б'},
@@ -254,7 +254,7 @@ export const tests: Array<Test> = [
             {
                 id: 4,
                 value: 'Вопрос',
-                correctAnswer: 'Вариант А',
+                correctAnswer: 3,
                 answers: [
                     {id: 1, value: 'Вариант А'},
                     {id: 2, value: 'Вариант Б'},
@@ -267,7 +267,7 @@ export const tests: Array<Test> = [
             {
                 id: 5,
                 value: 'Вопрос',
-                correctAnswer: 'Lorem ipsum sit amet, consectetur adipiscing elit.',
+                correctAnswer: 2,
                 answers: [
                     {id: 1, value: 'Lorem ipsum sit amet, consectetur adipiscing elit.'},
                     {id: 2, value: 'Lorem ipsum dolor sit amet, consectetur adipsicing elit. Aliquam sollicitudin odio sit amet.'},

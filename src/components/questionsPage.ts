@@ -1,17 +1,20 @@
 import {Test, UserAnswer} from '@/types';
+import { loadResultPage } from '@/components/resultPage';
+import { formatTimer } from "@/composables/timer";
 //import { loadTemplate } from '@/main';
 
 let totalQuestions: number = 0;
 let answeredQuestions: Array<UserAnswer> = [];
 let timerInterval: number = 0;
 let time: number = 0;
-const maxTime: number = 10;
-let testName: string = '';
+const maxTime: number = 600;
+let currentTest: Test;
 
-export async function loadTestPage(test: Test, pageContent: HTMLElement) {
+export async function loadQuestionPage(test: Test, pageContent: HTMLElement) {
+    time = 0;
     if (pageContent) {
         startTimer();
-        testName = test.title;
+        currentTest = test;
         const questionsTemplate = await loadTemplate('./components/templates/questions.html');
         pageContent.innerHTML = questionsTemplate;
         const testTitle = document.querySelector('.questions-header__title');
@@ -56,7 +59,7 @@ export async function loadTestPage(test: Test, pageContent: HTMLElement) {
         setTotalQuestions(test);
 
         document.getElementById('complete-test-button')?.addEventListener('click', () => {
-            completeTest(testName);
+            completeTest(test);
         });
 
         document.querySelector('.button_cancel-answers')?.addEventListener('click', () => {
@@ -114,29 +117,23 @@ function startTimer() {
 function updateTimer() {
     time++;
     if (time >= maxTime) {
-        completeTest(testName);
+        completeTest(currentTest);
     } else {
         updateTimerDisplay();
     }
 }
 
 function updateTimerDisplay() {
-    const hours = Math.floor(time / 3600);
-    const minutes = Math.floor((time % 3600) / 60);
-    const seconds = time % 60;
+    const formattedTimer = formatTimer(time);
     const timerElement  = document.querySelector('.questions-header__time');
     if (timerElement && timerElement instanceof HTMLElement) {
-        timerElement.innerText = `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+        timerElement.innerText = formattedTimer;
     }
 }
 
-function pad(number: number) {
-    return number.toString().padStart(2, '0');
-}
-
-function completeTest(testName: String) {
-    sessionStorage.setItem(String(testName), JSON.stringify(answeredQuestions));
-    //loadTestPage(test, pageContent);
+function completeTest(test: Test) {
+    sessionStorage.setItem(String(test.title), JSON.stringify(answeredQuestions));
+    loadResultPage(test, answeredQuestions, time);
 }
 
 async function loadTemplate(url: string): Promise<string> {

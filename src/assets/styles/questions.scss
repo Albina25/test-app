@@ -9,6 +9,10 @@
     font-size: 0.75rem;
   }
 
+  &__title {
+    color: $primary-text-color;
+  }
+
   &__information {
     position: absolute;
     right: 0;

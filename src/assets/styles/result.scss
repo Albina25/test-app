@@ -1,0 +1,75 @@
+.result-header {
+  align-items: center;
+  justify-content: center;
+
+  &__title {
+    color: $primary-text-color;
+  }
+
+  & .button_exit {
+    position: absolute;
+    left: 0;
+    top: 5px;
+    font-size: 0.75rem;
+  }
+
+  &__information {
+    position: absolute;
+    right: 0;
+    top: 5px;
+    display: flex;
+    flex-flow: row nowrap;
+    color: $gray25;
+    font-size: 0.75rem;
+
+    .space, .result-header__time {
+      padding: 7px 0.5rem;
+      color: $gray25;
+    }
+  }
+
+  &__progress {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.result-content {
+  padding: 1rem;
+
+  &__title {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+  }
+  &__finish-text {
+    font-size: 24px;
+    color: $primary-text-color;
+  }
+
+  &__question {
+    margin-bottom: 1rem;
+  }
+
+  &__answer {
+    padding: 1rem 0;
+    border-bottom: 2px dashed $gray80;
+  }
+
+  &__correct-answers {
+    padding: 0 1rem;
+  }
+
+  &__answers {
+    margin-top: 1rem;
+    color: $primary-text-color;
+  }
+
+  &__answer-item {
+    font-size: 0.9rem;
+  }
+}

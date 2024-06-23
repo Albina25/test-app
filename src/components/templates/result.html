@@ -1,10 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+<div class="result">
+    <header class="page-header result-header">
+        <button class="button_exit button button_text">Выход</button>
+        <div class="result-header__title"></div>
+        <div class="result-header__information">
+            <div class="result-header__progress">
+                <p class="result-header__progress_answered">0</p>/<p class="result-header__progress_total"></p>
+            </div>
+            <span class="space">|</span>
+            <p class="result-header__time">00:00:00</p>
+        </div>
+    </header>
+    <section class="result-content">
+        <div class="result-content__title">
+            <h3 class="result-content__finish-text">Тест завершён</h3>
+            <p class="test-progress"></p>
+        </div>
+        <p>Ваши ответы</p>
+        <div class="result-content__answers"></div>
+    </section>
+    <div class="bottom-buttons">
+        <button id="restart-test-button" class="button button_primary">Пройти еще раз</button>
+    </div>
+</div>
