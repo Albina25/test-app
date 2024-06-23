@@ -5,15 +5,16 @@ const navbarButton = document.getElementById('navbar-button') as HTMLButtonEleme
 const navbar = document.querySelector('.navbar') as HTMLElement;
 const navbarTitle = document.querySelector('.navbar__title') as HTMLElement;
 const navbarContent = document.querySelector('.navbar__content') as HTMLElement;
-const content = document.querySelector('.content') as HTMLElement;
 const testList = document.getElementById('test-list') as HTMLElement;
-//const pageContent = document.getElementById('page-content') as HTMLElement;
+
+const pageContent = document.getElementById('page-content') as HTMLElement;
+if (pageContent) {
+    pageContent.innerHTML = '<p class="first-content">Выберите тест из списка</p>';
+}
 
 tests.forEach(test => {
     const li = document.createElement('li');
     li.textContent = test.title;
-    //li.setAttribute('data-test-id', test.id.toString());
-    //li.setAttribute('data-test-description', test.description);
     testList?.appendChild(li);
 
     li.addEventListener('click', async () => {
@@ -55,16 +56,4 @@ function handleResize() {
 }
 
 handleResize();
-
-export async function loadTemplate(url: string): Promise<string> {
-    try {
-        const response = await fetch(url);
-        if (!response.ok) {
-            return `<p style="padding: 16px">Error loading template</p>`;
-        }
-        return await response.text();
-    } catch (error) {
-        return `<p style="padding: 16px">Error loading template</p>`;
-    }
-}
 

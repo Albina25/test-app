@@ -8,6 +8,24 @@
   padding: 8px 15px;
   border:none;
   cursor: pointer;
+  transition: opacity 0.3s ease;
+
+  &:hover {
+    opacity: 0.7;
+  }
+
+  &:active {
+    opacity: 1;
+  }
+}
+
+.group-buttons {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+  justify-content: space-evenly;
 }
 
 .bottom-buttons {

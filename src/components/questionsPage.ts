@@ -1,7 +1,7 @@
-import {Test, UserAnswer} from '@/types';
+import { Test, UserAnswer } from '@/types';
 import { loadResultPage } from '@/components/resultPage';
 import { formatTimer } from "@/composables/timer";
-//import { loadTemplate } from '@/main';
+import { loadTemplate } from '@/app';
 
 let totalQuestions: number = 0;
 let answeredQuestions: Array<UserAnswer> = [];
@@ -9,14 +9,19 @@ let timerInterval: number = 0;
 let time: number = 0;
 const maxTime: number = 600;
 let currentTest: Test;
+let pageContentElement: HTMLElement;
 
 export async function loadQuestionPage(test: Test, pageContent: HTMLElement) {
     time = 0;
     if (pageContent) {
-        startTimer();
+        pageContentElement = pageContent;
         currentTest = test;
-        const questionsTemplate = await loadTemplate('./components/templates/questions.html');
-        pageContent.innerHTML = questionsTemplate;
+        startTimer();
+
+        const isLoadQuestionsTemplate: boolean = await loadTemplate('./components/templates/questions.html', pageContent);
+        if (!isLoadQuestionsTemplate) {
+            return;
+        }
         const testTitle = document.querySelector('.questions-header__title');
         if (testTitle) testTitle.innerHTML = test.title;
 
@@ -67,7 +72,43 @@ export async function loadQuestionPage(test: Test, pageContent: HTMLElement) {
             resetAllInputs();
             updateProgress();
         });
+
+        document.querySelector('.button_exit')?.addEventListener('click', openModal);
     }
+}
+
+function openModal() {
+    const modal = document.querySelector('.modal') as HTMLElement;
+    const background = document.querySelector('.modal .background') as HTMLElement;
+    if (modal) {
+        modal.style.display = 'block';
+        stopTimer();
+
+        const modalExitButton = document.getElementById('confirm-modal-exit');
+        const modalCancelButton = document.getElementById('cancel-modal-exit');
+
+        if (modalExitButton && modalCancelButton) {
+            modalExitButton.addEventListener('click', () => {
+                pageContentElement.innerHTML = '<p class="first-content">Выберите тест из списка</p>';
+                modal.style.display = 'none';
+            });
+
+            modalCancelButton.addEventListener('click', () => {
+                clodeModal(modal);
+            });
+
+            window.addEventListener('click', function(event) {
+                if (event.target === background) {
+                    clodeModal(modal);
+                }
+            });
+        }
+    }
+}
+
+function clodeModal(modal: HTMLElement) {
+    modal.style.display = 'none';
+    startTimer();
 }
 
 function answerQuestion(questionId: number, answerId: number) {
@@ -114,6 +155,11 @@ function startTimer() {
     }
 }
 
+function stopTimer() {
+    clearInterval(timerInterval);
+    timerInterval = 0;
+}
+
 function updateTimer() {
     time++;
     if (time >= maxTime) {
@@ -134,16 +180,4 @@ function updateTimerDisplay() {
 function completeTest(test: Test) {
     sessionStorage.setItem(String(test.title), JSON.stringify(answeredQuestions));
     loadResultPage(test, answeredQuestions, time);
-}
-
-async function loadTemplate(url: string): Promise<string> {
-    try {
-        const response = await fetch(url);
-        if (!response.ok) {
-            return `<p style="padding: 16px">Error loading template</p>`;
-        }
-        return await response.text();
-    } catch (error) {
-        return `<p style="padding: 16px">Error loading template</p>`;
-    }
 }
