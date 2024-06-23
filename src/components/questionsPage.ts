@@ -13,6 +13,7 @@ let pageContentElement: HTMLElement;
 
 export async function loadQuestionPage(test: Test, pageContent: HTMLElement) {
     time = 0;
+    answeredQuestions = [];
     if (pageContent) {
         pageContentElement = pageContent;
         currentTest = test;
@@ -23,7 +24,7 @@ export async function loadQuestionPage(test: Test, pageContent: HTMLElement) {
             return;
         }
         const testTitle = document.querySelector('.questions-header__title');
-        if (testTitle) testTitle.innerHTML = test.title;
+        if (testTitle && window.innerWidth >= 768) testTitle.innerHTML = test.title;
 
         const questionsContainer = document.querySelector('.questions-content');
         if (questionsContainer) {

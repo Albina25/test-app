@@ -7,6 +7,12 @@
 @import "./result";
 @import "./modal";
 
+#app {
+  display: flex;
+  width: 100%;
+  height: calc(100% - $header-height * 2);
+}
+
 .first-content {
   display: flex;
   align-items: center;
@@ -18,10 +24,8 @@
 .content {
   width: 100%;
   flex-grow: 1;
-  //padding: 20px;
   display: flex;
   justify-content: center;
-  //align-items: center;
   color: #6c757d;
 }
 
@@ -54,8 +58,16 @@
 }
 
 @media (max-width: 768px) {
+  #app {
+    height: calc(100vh - $header-height * 3);
+    flex-direction: column;
+  }
   .content {
+    height: 100vh;
     margin: 0;
-    //margin-top: $navbar-height;
+  }
+
+  .scrollable {
+    height: calc(100vh - $header-height * 3 - 16px);
   }
 }

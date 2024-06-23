@@ -5,15 +5,17 @@ import { loadTemplate } from '@/app';
 
 let currentTest: Test;
 let userAnswers: Array<UserAnswer>;
+let pageContent: HTMLElement;
+let restartTestButton: HTMLElement | null;
+let exitButton: HTMLElement | null;
 
 export async function loadResultPage(test: Test, answers: Array<UserAnswer>, spentTime: number ) {
     currentTest = test;
     userAnswers = answers;
 
-    const pageContent: HTMLElement = document.getElementById('page-content') as HTMLElement;
+    pageContent = document.getElementById('page-content') as HTMLElement;
     if (pageContent) {
         const isLoadResultTemplate: boolean = await loadTemplate('./components/templates/result.html', pageContent);
-        console.log('isLoadResultTemplate', isLoadResultTemplate)
         if (!isLoadResultTemplate) {
             return;
         }
@@ -21,41 +23,14 @@ export async function loadResultPage(test: Test, answers: Array<UserAnswer>, spe
         displayTimer(spentTime);
         displayProgress(test, answers);
         displayCountAnswered();
+        displayTitle();
+        displayResult();
 
-        const testTitle = document.querySelector('.result-header__title');
-        if (testTitle) testTitle.innerHTML = test.title;
+        restartTestButton = document.getElementById('restart-test-button');
+        restartTestButton?.addEventListener('click', goToQuestionPage);
 
-        const answersContainer = document.querySelector('.result-content__answers');
-        if (answersContainer) {
-            test.questions.forEach(question => {
-                const correctAnswer: string = getCorrectAnswer(question);
-                const userAnswer: string = getUserAnswer(question, answers);
-
-                const answerElement = document.createElement('div');
-
-                answerElement.innerHTML = `
-                <div class="result-content__answer">
-                    <p class="result-content__question">${question.id}. ${question.value}</p>
-                    <div class="result-content__correct-answers">
-                        <p class="result-content__answer-item">Правильный ответ: ${correctAnswer}</p>
-                        <p class="result-content__answer-item">Вы ответили: ${userAnswer}</p> 
-                    </div> 
-                </div>
-            `;
-                answersContainer.appendChild(answerElement);
-            });
-        }
-
-        const restartTestButton = document.getElementById('restart-test-button');
-        if (restartTestButton) {
-            restartTestButton.addEventListener('click', () => {
-                loadQuestionPage(currentTest, pageContent);
-            })
-        }
-
-        document.querySelector('.button_exit')?.addEventListener('click', () => {
-            pageContent.innerHTML = '<p class="first-content">Выберите тест из списка</p>';
-        });
+        exitButton = document.querySelector('.button_exit');
+        exitButton?.addEventListener('click', goToFirstPage);
     }
 }
 
@@ -112,5 +87,53 @@ function displayTimer(spentTime: number) {
     const timerElement  = document.querySelector('.result-header__time');
     if (timerElement && timerElement instanceof HTMLElement) {
         timerElement.innerText = formattedTimer;
+    }
+}
+
+function displayTitle() {
+    const testTitle = document.querySelector('.result-header__title');
+    if (testTitle && window.innerWidth >= 768) testTitle.innerHTML = currentTest.title;
+}
+
+function displayResult() {
+    const answersContainer = document.querySelector('.result-content__answers');
+    if (answersContainer) {
+        currentTest.questions.forEach(question => {
+            const correctAnswer: string = getCorrectAnswer(question);
+            const userAnswer: string = getUserAnswer(question, userAnswers);
+
+            const answerElement = document.createElement('div');
+
+            answerElement.innerHTML = `
+                <div class="result-content__answer">
+                    <p class="result-content__question">${question.id}. ${question.value}</p>
+                    <div class="result-content__correct-answers">
+                        <p class="result-content__answer-item">Правильный ответ: ${correctAnswer}</p>
+                        <p class="result-content__answer-item">Вы ответили: ${userAnswer}</p> 
+                    </div> 
+                </div>
+            `;
+            answersContainer.appendChild(answerElement);
+        });
+    }
+}
+
+function goToFirstPage() {
+    clearListening();
+    pageContent.innerHTML = '<p class="first-content">Выберите тест из списка</p>';
+}
+
+function goToQuestionPage() {
+    clearListening();
+    loadQuestionPage(currentTest, pageContent);
+}
+
+function clearListening() {
+    if (exitButton) {
+        exitButton.removeEventListener('click', goToFirstPage);
+    }
+
+    if (restartTestButton) {
+        restartTestButton.removeEventListener('click', goToQuestionPage);
     }
 }
