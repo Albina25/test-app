@@ -1,5 +1,5 @@
 .navbar {
-  width: $navbar-collapsed-width;
+  width: $navbar-closed-width;
   height: 100vh;
   background-color: $navbar-color;
   transition: width 0.3s;
@@ -39,7 +39,7 @@
   &__button {
     position: absolute;
     top: 10px;
-    left: 15px;
+    left: 18px;
     background: none;
     border: none;
     font-size: 20px;
@@ -55,9 +55,7 @@
   &__content {
     width: 100%;
     padding: 10px;
-
     opacity: 0;
-    transition: opacity 0.1s;
 
     .test-list {
       list-style-type: none;
@@ -85,8 +83,8 @@
 
   &.collapsed .navbar__content {
     opacity: 1;
-    transition-delay: 0.2s;
-    transition: opacity 0.3s;
+    transition: opacity 1s;
+    transition-delay: 0.1s;
   }
 }
 

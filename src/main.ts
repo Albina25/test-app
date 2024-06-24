@@ -71,11 +71,9 @@ function handleResize() {
         const icon = navbarButton.querySelector('i') as HTMLElement;
         icon.classList.remove('fa-arrow-left');
         icon.classList.add('fa-bars');
-        navbarTitle.innerHTML = '';
+        navbarTitle.innerHTML = 'ТЕСТЫ';
     } else {
         navbarTitle.innerHTML = '';
     }
 }
-
-handleResize();
 
