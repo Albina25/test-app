@@ -1,12 +1,15 @@
-import { Test } from '@/types';
+import { Test, storageTest } from '@/types';
 import {loadMainPage, loadTemplate} from '@/app';
 import { loadQuestionPage } from '@/components/questionsPage';
+import {loadResultPage} from "@/components/resultPage";
 
 let currentTest: Test;
+let previousResultTest: storageTest | null;
 
 let pageContent: HTMLElement | null;
 let startTestButton: HTMLElement | null;
 let cancelButton: HTMLElement | null;
+let previousResultButton: HTMLElement | null;
 
 export async function loadDescriptionPage(test: Test) {
    currentTest = test;
@@ -26,6 +29,16 @@ export async function loadDescriptionPage(test: Test) {
 
          cancelButton = document.getElementById('cancel-button');
          cancelButton?.addEventListener('click', handleCancel);
+
+         previousResultButton = document.getElementById('previous-result-button');
+         if (previousResultButton) {
+            const hasPreviousResultTest: boolean = getStorageTest(currentTest.title);
+            if (hasPreviousResultTest) {
+               previousResultButton?.addEventListener('click', showPreviousResultTest);
+            } else {
+               previousResultButton.style.display = 'none';
+            }
+         }
      }
 }
 
@@ -36,9 +49,25 @@ function handleCancel() {
    }
 }
 
+function getStorageTest(testName: string) {
+   const storedTest = sessionStorage.getItem(testName);
+   if (storedTest) {
+      previousResultTest = JSON.parse(storedTest);
+      return true;
+   }
+   return false;
+}
+
+function showPreviousResultTest() {
+   if (previousResultTest && previousResultTest.userAnswers.length) {
+      loadResultPage(currentTest, previousResultTest?.userAnswers, previousResultTest?.spentTime);
+   }
+}
+
 function removeListening() {
    startTestButton?.removeEventListener('click', () => {
       loadQuestionPage(currentTest, pageContent!);
    });
    cancelButton?.removeEventListener('click', handleCancel);
+   previousResultButton?.removeEventListener('click', handleCancel);
 }

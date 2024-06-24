@@ -12,4 +12,11 @@ export function loadMainPage(pageContentElement: HTMLElement) {
     const navbarTitle = document.querySelector('.navbar__title') as HTMLElement;
     navbarTitle.innerHTML = 'ТЕСТЫ';
     pageContentElement.innerHTML = '<p class="first-content">Выберите тест из списка</p>';
+    clearActiveMenuItem();
+}
+
+function clearActiveMenuItem() {
+    document.querySelectorAll('.test-list__item').forEach(item => {
+        item.classList.remove('active');
+    });
 }

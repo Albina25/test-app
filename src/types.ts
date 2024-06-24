@@ -22,4 +22,9 @@ interface UserAnswer {
     answerId: number,
 }
 
-export type { Test, Question, Answer, UserAnswer };
+interface storageTest {
+    spentTime: number,
+    userAnswers: Array<UserAnswer>
+}
+
+export type { Test, Question, Answer, UserAnswer, storageTest };

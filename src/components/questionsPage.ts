@@ -1,4 +1,4 @@
-import { Question, Test, UserAnswer } from '@/types';
+import { Question, Test, UserAnswer, storageTest } from '@/types';
 import { loadResultPage } from '@/components/resultPage';
 import { formatTimer } from "@/composables/timer";
 import { loadMainPage, loadTemplate } from '@/app';
@@ -6,8 +6,8 @@ import { loadMainPage, loadTemplate } from '@/app';
 let totalQuestions: number = 0;
 let answeredQuestions: Array<UserAnswer> = [];
 let timerInterval: number = 0;
-let time: number = 0;
 const maxTime: number = 600;
+let time: number = maxTime;
 let currentTest: Test;
 
 let pageContentElement: HTMLElement;
@@ -20,7 +20,7 @@ let modal: HTMLElement | null;
 let background : HTMLElement | null;
 
 export async function loadQuestionPage(test: Test, pageContent: HTMLElement) {
-    time = 0;
+    time = maxTime;
     answeredQuestions = [];
     if (pageContent) {
         pageContentElement = pageContent;
@@ -191,7 +191,8 @@ function stopTimer() {
 }
 
 function updateTimer() {
-    time++;
+    time--;
+    //time++;
     if (time >= maxTime) {
         completeTest(currentTest);
     } else {
@@ -208,9 +209,14 @@ function updateTimerDisplay() {
 }
 
 function completeTest(test: Test) {
-    sessionStorage.setItem(String(test.title), JSON.stringify(answeredQuestions));
+    const spentTime: number = maxTime - time;
+    const dataForStorage: storageTest = {
+        spentTime: spentTime,
+        userAnswers: answeredQuestions,
+    }
+    sessionStorage.setItem(String(test.title), JSON.stringify(dataForStorage));
     removeListening();
-    loadResultPage(test, answeredQuestions, time);
+    loadResultPage(test, answeredQuestions, spentTime);
 }
 
 function removeListening() {

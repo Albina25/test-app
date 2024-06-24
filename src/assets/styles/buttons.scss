@@ -1,7 +1,7 @@
 .button {
   display: flex;
   align-items: center;
-  text-align: center;
+  justify-content: center;
   gap: 15px;
   border-radius: 4px;
   height: 40px;
@@ -21,10 +21,9 @@
 
 .group-buttons {
   display: flex;
-  width: 100%;
   flex-direction: row;
   flex-wrap: wrap;
-  margin-top: 1rem;
+  gap: 1rem;
   justify-content: space-evenly;
 }
 
@@ -61,5 +60,16 @@
 .button_text {
   background-color: $white;
   color: $gray20;
+  padding: 0;
   border: none;
+}
+
+@media (max-width: 768px) {
+  .button {
+    flex: 1;
+  }
+
+  .group-buttons {
+    width: 100%;
+  }
 }
