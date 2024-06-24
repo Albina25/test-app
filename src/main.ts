@@ -1,5 +1,6 @@
 import { tests } from '@/data/tests';
 import { loadDescriptionPage } from './components/descriptionPage';
+import {loadMainPage} from "@/app";
 
 const navbarButton = document.getElementById('navbar-button') as HTMLButtonElement;
 const navbar = document.querySelector('.navbar') as HTMLElement;
@@ -10,7 +11,7 @@ const icon = navbarButton.querySelector('i') as HTMLElement;
 
 const pageContent = document.getElementById('page-content') as HTMLElement;
 if (pageContent) {
-    pageContent.innerHTML = '<p class="first-content">Выберите тест из списка</p>';
+    loadMainPage(pageContent);
 }
 
 tests.forEach(test => {

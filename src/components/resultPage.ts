@@ -1,7 +1,7 @@
 import {Question, Test, UserAnswer} from '@/types';
 import {formatTimer} from "@/composables/timer";
 import { loadQuestionPage } from '@/components/questionsPage';
-import { loadTemplate } from '@/app';
+import {loadMainPage, loadTemplate} from '@/app';
 
 let currentTest: Test;
 let userAnswers: Array<UserAnswer>;
@@ -30,7 +30,7 @@ export async function loadResultPage(test: Test, answers: Array<UserAnswer>, spe
         restartTestButton?.addEventListener('click', goToQuestionPage);
 
         exitButton = document.querySelector('.button_exit');
-        exitButton?.addEventListener('click', goToFirstPage);
+        exitButton?.addEventListener('click', handleExit);
     }
 }
 
@@ -118,9 +118,9 @@ function displayResult() {
     }
 }
 
-function goToFirstPage() {
+function handleExit() {
     clearListening();
-    pageContent.innerHTML = '<p class="first-content">Выберите тест из списка</p>';
+    loadMainPage(pageContent);
 }
 
 function goToQuestionPage() {
@@ -130,7 +130,7 @@ function goToQuestionPage() {
 
 function clearListening() {
     if (exitButton) {
-        exitButton.removeEventListener('click', goToFirstPage);
+        exitButton.removeEventListener('click', handleExit);
     }
 
     if (restartTestButton) {

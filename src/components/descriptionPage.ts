@@ -1,9 +1,16 @@
 import { Test } from '@/types';
-import { loadTemplate } from '@/app';
+import {loadMainPage, loadTemplate} from '@/app';
 import { loadQuestionPage } from '@/components/questionsPage';
 
+let currentTest: Test;
+
+let pageContent: HTMLElement | null;
+let startTestButton: HTMLElement | null;
+let cancelButton: HTMLElement | null;
+
 export async function loadDescriptionPage(test: Test) {
-   const pageContent = document.getElementById('page-content') as HTMLElement;
+   currentTest = test;
+   pageContent = document.getElementById('page-content') as HTMLElement;
       if (pageContent) {
          const url = './components/templates/description.html';
          const isLoadDescriptionTemplate = await loadTemplate(url, pageContent);
@@ -12,12 +19,26 @@ export async function loadDescriptionPage(test: Test) {
          const testDescription = document.getElementById('test-description');
          if (testDescription) testDescription.innerHTML = test.description;
 
-         document.getElementById('start-test-button')?.addEventListener('click', () => {
-            loadQuestionPage(test, pageContent);
+         startTestButton = document.getElementById('start-test-button');
+         startTestButton?.addEventListener('click', () => {
+            loadQuestionPage(test, pageContent!);
          });
 
-         document.getElementById('cancel-button')?.addEventListener('click', () => {
-             pageContent.innerHTML = '<p class="first-content">Выберите тест из списка</p>';
-         });
+         cancelButton = document.getElementById('cancel-button');
+         cancelButton?.addEventListener('click', handleCancel);
      }
+}
+
+function handleCancel() {
+   if (pageContent) {
+      removeListening();
+      loadMainPage(pageContent);
+   }
+}
+
+function removeListening() {
+   startTestButton?.removeEventListener('click', () => {
+      loadQuestionPage(currentTest, pageContent!);
+   });
+   cancelButton?.removeEventListener('click', handleCancel);
 }

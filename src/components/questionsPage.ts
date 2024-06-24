@@ -1,7 +1,7 @@
-import { Test, UserAnswer } from '@/types';
+import { Question, Test, UserAnswer } from '@/types';
 import { loadResultPage } from '@/components/resultPage';
 import { formatTimer } from "@/composables/timer";
-import { loadTemplate } from '@/app';
+import { loadMainPage, loadTemplate } from '@/app';
 
 let totalQuestions: number = 0;
 let answeredQuestions: Array<UserAnswer> = [];
@@ -9,7 +9,15 @@ let timerInterval: number = 0;
 let time: number = 0;
 const maxTime: number = 600;
 let currentTest: Test;
+
 let pageContentElement: HTMLElement;
+let completeTestButton: HTMLElement | null;
+let cancelAnswersButton: HTMLElement | null;
+let exitButton: HTMLElement | null;
+let modalExitButton: HTMLElement | null;
+let modalCancelButton: HTMLElement | null;
+let modal: HTMLElement | null;
+let background : HTMLElement | null;
 
 export async function loadQuestionPage(test: Test, pageContent: HTMLElement) {
     time = 0;
@@ -17,20 +25,31 @@ export async function loadQuestionPage(test: Test, pageContent: HTMLElement) {
     if (pageContent) {
         pageContentElement = pageContent;
         currentTest = test;
-        startTimer();
 
         const isLoadQuestionsTemplate: boolean = await loadTemplate('./components/templates/questions.html', pageContent);
         if (!isLoadQuestionsTemplate) {
             return;
         }
-        const testTitle = document.querySelector('.questions-header__title');
-        if (testTitle && window.innerWidth >= 768) testTitle.innerHTML = test.title;
 
-        const questionsContainer = document.querySelector('.questions-content');
-        if (questionsContainer) {
-            test.questions.forEach(question => {
-                const questionElement = document.createElement('div');
-                questionElement.innerHTML = `
+        startTimer();
+        setTitle();
+        displayQuestions();
+        setTotalQuestions(test);
+        setListening();
+    }
+}
+
+function setTitle() {
+    const testTitle = document.querySelector('.questions-header__title');
+    if (testTitle && window.innerWidth >= 768) testTitle.innerHTML = currentTest.title;
+}
+
+function displayQuestions() {
+    const questionsContainer = document.querySelector('.questions-content');
+    if (questionsContainer) {
+        currentTest.questions.forEach(question => {
+            const questionElement = document.createElement('div');
+            questionElement.innerHTML = `
                     <div class="question">
                         <p class="question__title">${question.id}. ${question.value}</p>
                         <div class="question__answers">
@@ -48,72 +67,90 @@ export async function loadQuestionPage(test: Test, pageContent: HTMLElement) {
                         </div>
                     </div>
                 `;
-                questionsContainer.appendChild(questionElement);
+            questionsContainer.appendChild(questionElement);
 
-                questionElement.addEventListener('click', (event) => {
-                    const target = event.target as HTMLInputElement;
-                    if (!target.value) {
-                        return;
-                    }
-                    if (target.closest('.question__answers_item')) {
-                        answerQuestion(question.id, Number(target.value));
-                    }
-                });
-            });
-        }
-
-        setTotalQuestions(test);
-
-        document.getElementById('complete-test-button')?.addEventListener('click', () => {
-            completeTest(test);
+            questionElement.addEventListener('click', (event) => handleAnswerClick(event, question));
         });
+    }
+}
 
-        document.querySelector('.button_cancel-answers')?.addEventListener('click', () => {
-            answeredQuestions = [];
-            resetAllInputs();
-            updateProgress();
-        });
+function setTotalQuestions(test: Test) {
+    const totalAnswersElement= document.querySelector('.questions-header__progress_total');
+    if (totalAnswersElement) {
+        totalQuestions = test.questions.length;
+        totalAnswersElement.innerHTML = String(totalQuestions);
+    }
+}
 
-        document.querySelector('.button_exit')?.addEventListener('click', openModal);
+function setListening() {
+    completeTestButton = document.getElementById('complete-test-button')
+    completeTestButton?.addEventListener('click', () => {
+        completeTest(currentTest);
+    });
+
+    cancelAnswersButton = document.querySelector('.button_cancel-answers');
+    cancelAnswersButton?.addEventListener('click', cancelAnswers);
+
+    exitButton = document.querySelector('.button_exit');
+    exitButton?.addEventListener('click', openModal);
+}
+
+function cancelAnswers() {
+    answeredQuestions = [];
+    resetAllInputs();
+    updateProgress();
+}
+
+function handleAnswerClick(event: MouseEvent, question: Question) {
+    const target = event?.target as HTMLInputElement;
+    if (!target.value) {
+        return;
+    }
+    const closestItem = target.closest('.question__answers_item');
+    if (closestItem) {
+        answerQuestion(question.id, Number(target.value));
     }
 }
 
 function openModal() {
-    const modal = document.querySelector('.modal') as HTMLElement;
-    const background = document.querySelector('.modal .background') as HTMLElement;
+    modal = document.querySelector('.modal') as HTMLElement;
+    background = document.querySelector('.modal .background') as HTMLElement;
     if (modal) {
         modal.style.display = 'block';
         stopTimer();
 
-        const modalExitButton = document.getElementById('confirm-modal-exit');
-        const modalCancelButton = document.getElementById('cancel-modal-exit');
+        modalExitButton = document.getElementById('confirm-modal-exit');
+        modalCancelButton = document.getElementById('cancel-modal-exit');
 
         if (modalExitButton && modalCancelButton) {
-            modalExitButton.addEventListener('click', () => {
-                pageContentElement.innerHTML = '<p class="first-content">Выберите тест из списка</p>';
-                modal.style.display = 'none';
-            });
-
-            modalCancelButton.addEventListener('click', () => {
-                clodeModal(modal);
-            });
-
-            window.addEventListener('click', function(event) {
-                if (event.target === background) {
-                    clodeModal(modal);
-                }
-            });
+            modalExitButton.addEventListener('click', handleExit);
+            modalCancelButton.addEventListener('click', stayInThisPage);
+            background.addEventListener('click', stayInThisPage);
         }
     }
 }
 
-function clodeModal(modal: HTMLElement) {
-    modal.style.display = 'none';
+function stayInThisPage() {
+    closeModal();
     startTimer();
 }
 
+function closeModal() {
+    if (modal) {
+        modal.style.display = 'none';
+    }
+    removeListeningModalButtons();
+}
+
+function handleExit() {
+    removeListening();
+    removeListeningModalButtons();
+    closeModal();
+    loadMainPage(pageContentElement);
+}
+
 function answerQuestion(questionId: number, answerId: number) {
-    const isAnsweredThisQuestion = answeredQuestions.findIndex(question => question.questionId === questionId);
+    const isAnsweredThisQuestion: number = answeredQuestions.findIndex(question => question.questionId === questionId);
     if (isAnsweredThisQuestion < 0) {
         const answer: UserAnswer = {
             questionId: questionId,
@@ -130,14 +167,6 @@ function updateProgress() {
     if (progressAnsweredElement && totalAnswersElement) {
         progressAnsweredElement.textContent = String(answeredQuestions.length);
         totalAnswersElement.textContent = String(totalQuestions);
-    }
-}
-
-function setTotalQuestions(test: Test) {
-    const totalAnswersElement= document.querySelector('.questions-header__progress_total');
-    if (totalAnswersElement) {
-        totalQuestions = test.questions.length;
-        totalAnswersElement.innerHTML = String(totalQuestions);
     }
 }
 
@@ -180,5 +209,22 @@ function updateTimerDisplay() {
 
 function completeTest(test: Test) {
     sessionStorage.setItem(String(test.title), JSON.stringify(answeredQuestions));
+    removeListening();
     loadResultPage(test, answeredQuestions, time);
+}
+
+function removeListening() {
+    completeTestButton?.removeEventListener('click', () => {
+        completeTest(currentTest);
+    });
+    cancelAnswersButton?.removeEventListener('click', cancelAnswers);
+    exitButton?.removeEventListener('click', openModal);
+}
+
+function removeListeningModalButtons() {
+    modalCancelButton?.removeEventListener('click', () => {
+        closeModal();
+    });
+    modalExitButton?.removeEventListener('click', handleExit);
+    background?.removeEventListener('click', stayInThisPage);
 }
