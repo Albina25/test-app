@@ -45,7 +45,7 @@ export async function loadDescriptionPage(test: Test) {
 function handleCancel() {
    if (pageContent) {
       removeListening();
-      loadMainPage(pageContent);
+      loadMainPage('Выберите тест из списка', pageContent);
    }
 }
 

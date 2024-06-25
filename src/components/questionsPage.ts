@@ -146,7 +146,7 @@ function handleExit() {
     removeListening();
     removeListeningModalButtons();
     closeModal();
-    loadMainPage(pageContentElement);
+    loadMainPage('Выберите тест из списка', pageContentElement);
 }
 
 function answerQuestion(questionId: number, answerId: number) {

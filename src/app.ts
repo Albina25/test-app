@@ -4,18 +4,23 @@ export async function loadTemplate(url: string, pageContent: HTMLElement) {
         pageContent.innerHTML = await response.text();
         return true;
     }
-    pageContent.innerHTML = `<p class="first-content">Непредвиденная ошибка</p>`;
+    const text: string = 'Непредвиденная ошибка';
+    loadMainPage(text, pageContent);
     return false;
 }
 
-export function loadMainPage(pageContentElement: HTMLElement) {
+export function loadMainPage(text: string, pageContentElement: HTMLElement) {
     const navbarTitle = document.querySelector('.navbar__title') as HTMLElement;
-    navbarTitle.innerHTML = 'ТЕСТЫ';
-    pageContentElement.innerHTML = '<p class="first-content">Выберите тест из списка</p>';
-    clearActiveMenuItem();
+
+    if (navbarTitle) {
+        navbarTitle.innerHTML = 'ТЕСТЫ';
+    }
+
+    pageContentElement.innerHTML = `<p class="first-content">${text}</p>`;
+    clearActiveNavbarItem();
 }
 
-function clearActiveMenuItem() {
+function clearActiveNavbarItem() {
     document.querySelectorAll('.test-list__item').forEach(item => {
         item.classList.remove('active');
     });

@@ -120,7 +120,7 @@ function displayResult() {
 
 function handleExit() {
     clearListening();
-    loadMainPage(pageContent);
+    loadMainPage('Выберите тест из списка', pageContent);
 }
 
 function goToQuestionPage() {

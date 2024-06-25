@@ -11,7 +11,7 @@ const icon = navbarButton.querySelector('i') as HTMLElement;
 
 const pageContent = document.getElementById('page-content') as HTMLElement;
 if (pageContent) {
-    loadMainPage(pageContent);
+    loadMainPage('Выберите тест из списка', pageContent);
 }
 
 tests.forEach(test => {
